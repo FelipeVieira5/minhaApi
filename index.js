@@ -28,7 +28,8 @@ minhaApi.get('/test',(req, res) => {
 });
 
 minhaApi.post('/cadastro',(req,res) => {
-    console.log(req.body);
+   // console.log(req.body);
+    users.push(req.body.nome);
     res.send();
 });
 
