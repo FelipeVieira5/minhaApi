@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "node ./index.js"
+    "api": "nodemon ./index.js"
   },
   "author": "Felipe Vieira",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@sk1ppi/hello-world-npm": "^1.0.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "nodemon": "^3.1.0"
   }
 }
