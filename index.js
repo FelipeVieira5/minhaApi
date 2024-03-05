@@ -102,7 +102,7 @@ minhaApi.put('/usuarios/:idUsuario',(req,res) => {
     res.send();
 });
 
-
+// Requisição para deletar um úsuario pelo seu ID
 minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
     console.log(req.params.idUsuario);
     const idUsuario = req.params.idUsuario;
@@ -114,6 +114,7 @@ minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
     res.send();
 });
 
+// Requisição para buscar a lista de cargos
 minhaApi.get('/cargos',(req,res) => {
     let cargoInfo = '';
     
@@ -130,6 +131,25 @@ minhaApi.get('/cargos',(req,res) => {
     res.send(cargoInfo);
 });
 
+
+// Requisição para buscar um cargo pelo seu código
+minhaApi.get('/cargo/:idCargo',(req, res) => {
+    let repostaCargo = '';
+    const idCargo = req.params.idUsuario;
+
+    const objCargo = cargoList.find(user => parseInt(user.id) === parseInt(idCargo));
+    //console.log(req.body);
+    //res.send('<h1> Hello World!</h1><p>Paragrafo foda</p>');
+    //res.send(pessoa);
+    repostaCargo += '<p>';
+    repostaCargo += "Codigo: "+objCargo.codigo+" - ";
+    repostaCargo += "Nome: "+objCargo.nome+" - ";
+    repostaCargo += "Descricao: "+objCargo.descricao+" - ";
+    repostaCargo += '</p>\n';
+    res.send(repostaCargo);
+});
+
+// Requisição para criar um novo cargo
 minhaApi.post('/cargos',(req,res) => {
     const maiorID = Math.max(...cargoList.map(({ codigo }) => codigo));
     const objCargo = {codigo: maiorID+1,nome:req.body.nome ,descricao:req.body.descricao};
