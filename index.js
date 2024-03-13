@@ -18,7 +18,8 @@ const funcionarioList = [
         id: 2,
         nome: 'João',
         idade: 18,
-        CPF: '10225436734'
+        CPF: '10225436734',
+        Cargo: undefined
     }
 ];
 
@@ -35,6 +36,7 @@ const cargoList = [
     }
 ]
 
+// Develor uma lista de usuários 
 minhaApi.get('/usuarios',(req, res) => {
     let repostaUser = '';
     
@@ -52,6 +54,8 @@ minhaApi.get('/usuarios',(req, res) => {
     res.send(repostaUser);
 });
 
+
+//Devolver os dados de um usuário específico pelo seu ID na URL
 minhaApi.get('/usuarios/:idUsuario',(req, res) => {
     let repostaUser = '';
     const idUsuario = req.params.idUsuario;
@@ -81,6 +85,8 @@ minhaApi.post('/usuarios',(req,res) => {
     return;
 });
 
+
+//Atualizar um usuário pelo ID na URL 
 minhaApi.put('/usuarios/:idUsuario',(req,res) => {
     console.log(req.params.idUsuario);
     const idUsuario = req.params.idUsuario;
@@ -102,7 +108,8 @@ minhaApi.put('/usuarios/:idUsuario',(req,res) => {
     res.send();
 });
 
-// Requisição para deletar um úsuario pelo seu ID
+
+// Requisição para deletar um úsuario pelo seu ID na URL
 minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
     console.log(req.params.idUsuario);
     const idUsuario = req.params.idUsuario;
@@ -113,6 +120,10 @@ minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
     
     res.send();
 });
+
+//========================================//
+//                CARGO                   //
+//========================================//
 
 // Requisição para buscar a lista de cargos
 minhaApi.get('/cargos',(req,res) => {
@@ -133,7 +144,7 @@ minhaApi.get('/cargos',(req,res) => {
 
 
 // Requisição para buscar um cargo pelo seu código
-minhaApi.get('/cargo/:idCargo',(req, res) => {
+minhaApi.get('/cargos/:idCargo',(req, res) => {
     let repostaCargo = '';
     const idCargo = req.params.idUsuario;
 
@@ -157,6 +168,35 @@ minhaApi.post('/cargos',(req,res) => {
     cargoList.push(objCargo);
     res.send('Usuario adicionado');
     return;
+});
+
+//Atualizar um usuário pelo ID na URL 
+minhaApi.put('/cargos/:idCargo',(req,res) => {
+    console.log(req.params.idCargo);
+    const idCargo = req.params.idCargo;
+
+                                                        // NOME E DESCRIÇÃO
+    const novoCargo = {id: parseInt(idCargo),nome:req.body.nome ,descricao:req.body.descricao};
+
+
+    const objCargo = cargoList.find(cargo => parseInt(cargo.id) === parseInt(idCargo));
+    
+    if (objCargo && novoCargo) {
+        objCargo.nome = novoCargo.nome;
+        objCargo.descricao = novoCargo.idade;
+    }
+    res.send();
+});
+
+
+// Requisição para deletar um úsuario pelo seu ID na URL
+minhaApi.delete('/cargos/:idCargo',(req,res) => {
+    const idCargo = req.params.idCargo;
+
+    const index = cargoList.findIndex(cargo => parseInt(cargo.id) === idCargo);
+    cargoList.splice(index-1, 1);
+    
+    res.send();
 });
 
 minhaApi.listen(porta, () => {console.log('Minha Primeira API na porta:'+porta)});
