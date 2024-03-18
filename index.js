@@ -1,4 +1,5 @@
 const expresso = require('express');
+const { status } = require('express/lib/response');
 const minhaApi = expresso();
 
 minhaApi.use(expresso.json());minhaApi.use(expresso.json());
@@ -103,7 +104,6 @@ minhaApi.put('/usuarios/:idUsuario',(req,res) => {
         objUser.nome = novoUser.nome;
         objUser.idade = novoUser.idade;
         objUser.CPF = novoUser.CPF;
-
     }
     res.send();
 });
@@ -144,14 +144,17 @@ minhaApi.get('/cargos',(req,res) => {
 
 
 // Requisição para buscar um cargo pelo seu código
-minhaApi.get('/cargos/:idCargo',(req, res) => {
+minhaApi.get('/cargos/:codigoCargo',(req, res) => {
     let repostaCargo = '';
-    const idCargo = req.params.idUsuario;
+    const codigoCargo = req.params.codigoCargo;
 
-    const objCargo = cargoList.find(user => parseInt(user.id) === parseInt(idCargo));
-    //console.log(req.body);
-    //res.send('<h1> Hello World!</h1><p>Paragrafo foda</p>');
-    //res.send(pessoa);
+    
+    const objCargo = cargoList.find(cargo => parseInt(cargo.codigo) === parseInt(codigoCargo));
+    if (!objCargo) {
+        res.sendStatus(500);
+        return;
+    }
+
     repostaCargo += '<p>';
     repostaCargo += "Codigo: "+objCargo.codigo+" - ";
     repostaCargo += "Nome: "+objCargo.nome+" - ";
@@ -171,30 +174,29 @@ minhaApi.post('/cargos',(req,res) => {
 });
 
 //Atualizar um usuário pelo ID na URL 
-minhaApi.put('/cargos/:idCargo',(req,res) => {
-    console.log(req.params.idCargo);
-    const idCargo = req.params.idCargo;
+minhaApi.put('/cargos/:codCargos',(req,res) => {
+    const codCargos = req.params.codCargos;
 
                                                         // NOME E DESCRIÇÃO
-    const novoCargo = {id: parseInt(idCargo),nome:req.body.nome ,descricao:req.body.descricao};
+    const novoCargo = {codigo: parseInt(codCargos),nome:req.body.nome ,descricao:req.body.descricao};
 
 
-    const objCargo = cargoList.find(cargo => parseInt(cargo.id) === parseInt(idCargo));
+    const objCargo = cargoList.find(cargo => parseInt(cargo.codigo) === parseInt(codCargos));
     
     if (objCargo && novoCargo) {
         objCargo.nome = novoCargo.nome;
-        objCargo.descricao = novoCargo.idade;
+        objCargo.descricao = novoCargo.descricao;
     }
     res.send();
 });
 
 
 // Requisição para deletar um úsuario pelo seu ID na URL
-minhaApi.delete('/cargos/:idCargo',(req,res) => {
-    const idCargo = req.params.idCargo;
+minhaApi.delete('/cargos/:codCargo',(req,res) => {
+    const codCargo = req.params.codCargo;
 
-    const index = cargoList.findIndex(cargo => parseInt(cargo.id) === idCargo);
-    cargoList.splice(index-1, 1);
+    const index = cargoList.findIndex(cargo => parseInt(cargo.codigo) === codCargo);
+    cargoList.splice(index, 1);
     
     res.send();
 });
