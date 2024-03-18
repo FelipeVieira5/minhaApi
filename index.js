@@ -13,14 +13,14 @@ const funcionarioList = [
         nome: 'Felipe',
         idade: 18,
         CPF: '10225436734',
-        Cargo: undefined
+        Cargo: 1
     },
     {
         id: 2,
         nome: 'João',
         idade: 18,
         CPF: '10225436734',
-        Cargo: undefined
+        Cargo: 2
     }
 ];
 
@@ -40,16 +40,14 @@ const cargoList = [
 // Develor uma lista de usuários 
 minhaApi.get('/usuarios',(req, res) => {
     let repostaUser = '';
-    
-    //console.log(req.body);
-    //res.send('<h1> Hello World!</h1><p>Paragrafo foda</p>');
-    //res.send(pessoa);
+
     for(const user of funcionarioList){
         repostaUser += '<p>';
-        repostaUser += "Id: "+user.id+" - ";
-        repostaUser += "Nome: "+user.nome+" - ";
-        repostaUser += "Idade: "+user.idade+" - ";
-        repostaUser += "CPF: "+user.CPF;
+        repostaUser += "Id: "+user.id+"<br>";
+        repostaUser += "Nome: "+user.nome+"<br>";
+        repostaUser += "Idade: "+user.idade+"<br>";
+        repostaUser += "CPF: "+user.CPF+"<br>";
+        repostaUser += "Cargo ID: "+user.Cargo+"<br>";
         repostaUser += '</p>\n';
     }
     res.send(repostaUser);
@@ -66,10 +64,11 @@ minhaApi.get('/usuarios/:idUsuario',(req, res) => {
     //res.send('<h1> Hello World!</h1><p>Paragrafo foda</p>');
     //res.send(pessoa);
     repostaUser += '<p>';
-    repostaUser += "Id: "+objUser.id+" - ";
-    repostaUser += "Nome: "+objUser.nome+" - ";
-    repostaUser += "Idade: "+objUser.idade+" - ";
-    repostaUser += "CPF: "+objUser.CPF;
+    repostaUser += "Id: "+objUser.id+"<br>";
+    repostaUser += "Nome: "+objUser.nome+"<br>";
+    repostaUser += "Idade: "+objUser.idade+"<br>";
+    repostaUser += "CPF: "+objUser.CPF+"<br>";
+    repostaUser += "Cargo ID: "+objUser.Cargo+"<br>";
     repostaUser += '</p>\n';
     res.send(repostaUser);
 });
@@ -128,15 +127,12 @@ minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
 // Requisição para buscar a lista de cargos
 minhaApi.get('/cargos',(req,res) => {
     let cargoInfo = '';
-    
-    //console.log(req.body);
-    //res.send('<h1> Hello World!</h1><p>Paragrafo foda</p>');
-    //res.send(pessoa);
+
     for(const cargo of cargoList){
         cargoInfo += '<p>';
-        cargoInfo += "Codigo: "+cargo.codigo+" - ";
-        cargoInfo += "Nome: "+cargo.nome+" - ";
-        cargoInfo += "Descricao: "+cargo.descricao+" - ";
+        cargoInfo += "Codigo: "+cargo.codigo+"<br>";
+        cargoInfo += "Nome: "+cargo.nome+"<br>";
+        cargoInfo += "Descricao: "+cargo.descricao+"<br>";
         cargoInfo += '</p>\n';
     }
     res.send(cargoInfo);
@@ -144,21 +140,21 @@ minhaApi.get('/cargos',(req,res) => {
 
 
 // Requisição para buscar um cargo pelo seu código
-minhaApi.get('/cargos/:codigoCargo',(req, res) => {
+minhaApi.get('/cargos/:codCargo',(req, res) => {
     let repostaCargo = '';
-    const codigoCargo = req.params.codigoCargo;
+    const codCargo = req.params.codCargo;
 
     
-    const objCargo = cargoList.find(cargo => parseInt(cargo.codigo) === parseInt(codigoCargo));
+    const objCargo = cargoList.find(cargo => parseInt(cargo.codigo) === parseInt(codCargo));
     if (!objCargo) {
-        res.sendStatus(500);
+        res.status(500).send();
         return;
     }
 
     repostaCargo += '<p>';
-    repostaCargo += "Codigo: "+objCargo.codigo+" - ";
-    repostaCargo += "Nome: "+objCargo.nome+" - ";
-    repostaCargo += "Descricao: "+objCargo.descricao+" - ";
+    repostaCargo += "Codigo: "+objCargo.codigo+"<br>";
+    repostaCargo += "Nome: "+objCargo.nome+"<br>";
+    repostaCargo += "Descricao: "+objCargo.descricao+"<br>";
     repostaCargo += '</p>\n';
     res.send(repostaCargo);
 });
@@ -169,7 +165,7 @@ minhaApi.post('/cargos',(req,res) => {
     const objCargo = {codigo: maiorID+1,nome:req.body.nome ,descricao:req.body.descricao};
 
     cargoList.push(objCargo);
-    res.send('Usuario adicionado');
+    res.send('Cargo adicionado');
     return;
 });
 
