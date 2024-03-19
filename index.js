@@ -69,6 +69,9 @@ minhaApi.get('/usuarios/:idUsuario',(req, res) => {
     repostaUser += "Idade: "+objUser.idade+"<br>";
     repostaUser += "CPF: "+objUser.CPF+"<br>";
     repostaUser += "Cargo ID: "+objUser.Cargo+"<br>";
+    if(cargoList[objUser.Cargo] !== undefined){
+        repostaUser += "Cargo :"+cargoList[objUser.Cargo].nome+"<br>";
+    }else repostaUser += "Cargo :"+"Não encontrado"+"<br>";
     repostaUser += '</p>\n';
     res.send(repostaUser);
 });
@@ -78,7 +81,7 @@ minhaApi.post('/usuarios',(req,res) => {
    // console.log(req.body);
    const maiorID = Math.max(...funcionarioList.map(({ id }) => id));
    
-   const objUser = {id: maiorID+1,nome:req.body.nome ,idade:req.body.idade, CPF:req.body.cpf};
+   const objUser = {id: maiorID+1,nome:req.body.nome ,idade:req.body.idade, CPF:req.body.cpf, Cargo:req.body.Cargo};
 
     funcionarioList.push(objUser);
     res.send('Usuario adicionado');
@@ -90,7 +93,7 @@ minhaApi.post('/usuarios',(req,res) => {
 minhaApi.put('/usuarios/:idUsuario',(req,res) => {
     console.log(req.params.idUsuario);
     const idUsuario = req.params.idUsuario;
-    const novoUser = {id: parseInt(idUsuario),nome:req.body.nome ,idade:req.body.idade, CPF:req.body.cpf};
+    const novoUser = {id: parseInt(idUsuario),nome:req.body.nome ,idade:req.body.idade, CPF:req.body.cpf,Cargo:req.body.Cargo};
 
 
     const objUser = funcionarioList.find(user => parseInt(user.id) === parseInt(idUsuario));
@@ -103,6 +106,7 @@ minhaApi.put('/usuarios/:idUsuario',(req,res) => {
         objUser.nome = novoUser.nome;
         objUser.idade = novoUser.idade;
         objUser.CPF = novoUser.CPF;
+        objUser.Cargo = novoUser.Cargo;
     }
     res.send();
 });
@@ -115,7 +119,7 @@ minhaApi.delete('/usuarios/:idUsuario',(req,res) => {
 
     const index = funcionarioList.findIndex(user => parseInt(user.id) === idUsuario);
 
-    funcionarioList.splice(index-1, 1);
+    funcionarioList.splice(index, 1);
     
     res.send();
 });
